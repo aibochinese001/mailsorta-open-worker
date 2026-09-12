@@ -1,0 +1,46 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mailsorta-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // 首次部署默认走 <name>.<account>.workers.dev；如需绑定自定义域名/路由，在此配置 routes 或自定义域名
+  "workers_dev": true,
+  "assets": {
+    "directory": "./frontend/dist",
+    "binding": "ASSETS"
+  },
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  "vars": {
+    // 生产环境改为你的域名（支付通知/回跳/回环回调依赖）；首次部署走 workers.dev，直接部署即可
+    "APP_BASE_URL": "https://REPLACE_WITH_YOUR_DOMAIN",
+    "WEBHOOK_ENABLED": "outlook,agently",
+    // 管理员邮箱白名单（逗号分隔）：注册命中自动授予 admin；也可在管理后台设置 admin_emails 覆盖
+    "ADMIN_EMAILS": "admin@example.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mailsorta-db",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "mailsorta-exports"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

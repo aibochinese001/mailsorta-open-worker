@@ -1,0 +1,26 @@
+# 复制为 .dev.vars 后填入本地开发值（wrangler dev 会自动读取，无需提交）
+
+# ---- 必填：会话签名密钥（任意随机长字符串）----
+# 生产环境通过 `npx wrangler secret put SESSION_SECRET` 设置；缺失时本地可登录但会给出警示
+SESSION_SECRET=
+
+# ---- 必填：令牌加密（由 `npm run key:generate` 生成，base64 32 字节）----
+TOKEN_ENCRYPTION_KEY=
+
+# ---- Gmail（Google Cloud Console OAuth 客户端）----
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# ---- Outlook（Azure 应用注册）----
+MICROSOFT_CLIENT_ID=
+MICROSOFT_CLIENT_SECRET=
+
+# ---- Agently Mail（QQ）本地桥接层 ----
+# bridge/ 目录下启动：AGENTLY_BRIDGE_TOKEN=xxx node index.mjs
+AGENTLY_BRIDGE_URL=http://127.0.0.1:9876
+AGENTLY_BRIDGE_TOKEN=
+
+# ---- 可选：LLM 字段提取（OpenAI 兼容端点，如豆包/DeepSeek/OpenAI）----
+LLM_API_URL=
+LLM_API_KEY=
+LLM_MODEL=
