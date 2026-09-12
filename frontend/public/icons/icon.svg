@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2f6f9f"/>
+      <stop offset="100%" stop-color="#1d4e72"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆形渐变背景 -->
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <!-- 信封主体 -->
+  <rect x="128" y="150" width="256" height="180" rx="24" fill="#ffffff"/>
+  <!-- 信封折线 -->
+  <path d="M128 176 L256 284 L384 176" fill="none" stroke="#2f6f9f" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 整理线条（三横线 + 对勾） -->
+  <path d="M200 330 h112" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="200" cy="358" r="8" fill="#ffffff"/>
+  <path d="M216 358 l14 14 l30 -30" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

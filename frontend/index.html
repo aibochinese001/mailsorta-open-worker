@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="MailSorta · 邮件自动整理 SaaS：连接 Gmail / Outlook / Agent Mail，按规则提取邮件信息入库，查询并导出 Excel。" />
+    <meta name="theme-color" content="#2f6f9f" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>MailSorta · 邮件整理</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function (e) {
+            console.warn('SW 注册失败:', e);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "MailSorta · 邮件整理",
+  "short_name": "MailSorta",
+  "description": "连接 Gmail / Outlook / Agent Mail，按规则自动整理邮件信息，查询并导出 Excel。",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f3ee",
+  "theme_color": "#2f6f9f",
+  "icons": [
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
