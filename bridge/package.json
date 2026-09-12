@@ -1,0 +1,16 @@
+{
+  "name": "agently-bridge",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agently Mail (QQ) 本地桥接层：把 agently-cli 封装为 HTTP 接口，供 Cloudflare Worker 调用；另含 IMAP 代理（QQ/163/126）",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "imapflow": "^1.7.8"
+  }
+}
