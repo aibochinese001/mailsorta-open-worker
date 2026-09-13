@@ -38,7 +38,7 @@ AGENTLY_BRIDGE_TOKEN=你的随机token node index.mjs
 ## 重要
 
 - **命令映射**：`index.mjs` 底部的 `TOOL_MAP` 是唯一的命令映射点。若与 `agently-cli --help` 输出不一致，只改这里。
-- **授权链接提取**：`auth login` 采用 OAuth 设备码模式，输出授权链接后需在浏览器打开并用微信扫码。桥接层按优先级提取链接（微信扫码 > OAuth/设备码），并排除文档/仓库等无关 URL；`/auth/start` 返回的 `urls` 字段可排查抓取结果。
+- **授权链接提取**：`auth login` 采用 OAuth 设备码模式，输出授权链接后需在浏览器打开并用微信扫码。桥接层按优先级提取链接（微信扫码 URL > OAuth 设备码 URL）
 - **授权中单实例**：同一时刻只允许一个 `auth login` 进程，重复发起会复用当前授权链接，避免 CLI 登录态冲突。
 - **CLI 未安装**：`/auth/start` 会返回 500 并给出 `npm install -g @tencent-qqmail/agently-cli` 提示。
 - **凭据位置**：agently-cli 的登录凭据保存在本机用户目录；桥接层配置（watcher、授权会话）存在 `bridge/data/config.json`（已 gitignore）。
