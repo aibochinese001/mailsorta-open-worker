@@ -1,11 +1,13 @@
 # MailSorta Worker · 邮件整理 SaaS
 
-部署在 Cloudflare Workers 上的**多租户邮件整理 SaaS**：接入 **Gmail / Outlook / Agently Mail（QQ 新推出的 Agent 专属邮箱）**，按"发件人规则"定期抓取邮件、按自定义字段提取关键信息入库（D1），网页端查询并一键导出 **Excel**。支持**注册/登录、会员套餐（月/季/年/永久）、易支付 USD 计价收款（支付宝/微信/USDT/Stripe）、管理后台**，可直接商用。
+部署在 Cloudflare Workers 上的**多租户邮件整理 SaaS**：接入 **Gmail / Outlook / Agently Mail（QQ 新推出的 Agent 专属邮箱）**，按"发件人规则"定期抓取邮件、按�[...]
+
+> 📚 **图文部署教程**：https://opcgrow.org/article.php?id=130
 
 ## 功能
 
 ### 邮件整理（核心）
-- **多源接入**：Gmail（Google OAuth2）、Outlook（Microsoft Graph OAuth2）、Agently Mail（微信扫码 OAuth，经本地桥接层）、QQ/网易 163/126（IMAP 授权码，经桥接层代理）
+- **多源接入**：Gmail（Google OAuth2）、Outlook（Microsoft Graph OAuth2）、Agently Mail（微信扫码 OAuth，经本地桥接层）、QQ/网易 163/126（IMAP 授权码，经桥接层代��[...]
 - **规则引擎**：发件人精确 / 域名 / 正则三种匹配；每条规则独立字段配置
 - **自定义字段提取**：邮件头字段、正文正则（命名捕获组）、可选 LLM 提取（OpenAI 兼容端点）
 - **两种调度**：`interval`（按间隔分钟整理）/ `on_receive`（收到即整理，Cron + Webhook 双通道）
@@ -16,11 +18,11 @@
 - **注册 / 登录 / 忘记密码**：邮箱验证码（KV 存储，TTL 5 分钟），PBKDF2-SHA256 60 万次迭代存密码
 - **新用户默认 30 天免费试用**：试用期与付费会员同配额；到期自动降级免费（1 账号 / 5 规则）
 - **会员套餐**：月付 / 季付 / 年付 / 永久，USD 标价，管理后台可增删改上下架
-- **易支付收款（USD 直接计价）**：套餐按 USD 标价，下单金额原样传给易支付（微信/支付宝通道自带汇率换算，不做 USD→CNY 折算）；异步通知验签 + 金额校验 + 幂等履约，订单查询惰性过期 + 主动查单兜底
+- **易支付收款（USD 直接计价）**：套餐按 USD 标价，下单金额原样传给易支付（微信/支付宝通道自带汇率换算，不做 USD→CNY 折算）；异步通知验签 [...]
 - **四种支付方式（管理员后台勾选）**：支付宝 `alipay`、微信 `wxpay`、USDT `gmpay`、Stripe 法币 `fiatstripe`
 - **QQ SMTP 邮件**：注册/重置验证码邮件、支付成功通知邮件；未配置时返回 devCode 便于本地开发
 - **管理后台**：统计（用户/付费/订单/收入）、用户管理（禁用/角色/送会员）、套餐管理、订单管理、系统设置（SMTP/易支付/配额/注册开关/汇率）
-- **多租户数据隔离**：所有业务数据按 `user_id` 隔离，OAuth 账号归属发起用户；管理员由「管理员邮箱白名单」单独授予（`ADMIN_EMAILS` 环境变量或管理后台设置 `admin_emails`），注册不会自动产生管理员
+- **多租户数据隔离**：所有业务数据按 `user_id` 隔离，OAuth 账号归属发起用户；管理员由「管理员邮箱白名单」单独授予（`ADMIN_EMAILS` 环境变量或管��[...]
 
 ## 架构
 
@@ -60,7 +62,7 @@ mailsorta-open-worker/
 ├── bridge/                   # 本地桥接层（Node）：Agently CLI 封装 + IMAP 代理（QQ/163/126）
 ├── frontend/                 # Vue3 + Vite 管理台（登录/套餐/管理后台）
 ├── scripts/                  # 密码哈希 / 加密密钥生成 / 一键初始化
-└── test/                     # Vitest 单元 + API 集成测试（36 用例）
+└── test/                     # Vitest 单元 + API 集成测试（36 用例)
 ```
 
 ## 快速开始（本地开发）
@@ -130,16 +132,16 @@ npx wrangler deploy
 
 ## 上线前配置清单（管理后台 → 系统设置）
 
-0. **邮箱接入（OAuth 凭据，可选）**：`google_client_id/secret`（Gmail）、`microsoft_client_id/secret`（Outlook）、`agently_bridge_url/token`（Agently 桥接层）均可直接在管理后台填写并保存到数据库，开源部署无需修改环境变量；也可继续用环境变量/Secrets（DB 配置优先）。重定向 URI 分别为 `/api/accounts/oauth/gmail/callback`、`/api/accounts/oauth/outlook/callback`。
-1. **QQ SMTP**：`smtp_host=smtp.qq.com`、`smtp_port=465`、勾选 SSL、`smtp_user=你的QQ邮箱`、`smtp_pass=QQ邮箱授权码`、`smtp_from=站点名`。QQ 邮箱路径：设置 → 账户 → 开启 SMTP 服务 → 生成授权码。未配置时注册验证码会以 devCode 形式返回（仅限本地开发，生产必须配置）。
-2. **易支付**：`epay_api_url=你的易支付接口地址`、`epay_pid=商户ID`、`epay_key=商户密钥`；勾选需要开放的支付方式（支付宝/微信/USDT/Stripe）。type 调用值：alipay / wxpay / gmpay / fiatstripe。金额按套餐 USD 原价提交，通道自带汇率换算。
+0. **邮箱接入（OAuth 凭据，可选）**：`google_client_id/secret`（Gmail）、`microsoft_client_id/secret`（Outlook）、`agently_bridge_url/token`（Agently 桥接层）均可直接��[...]
+1. **QQ SMTP**：`smtp_host=smtp.qq.com`、`smtp_port=465`、勾选 SSL、`smtp_user=你的QQ邮箱`、`smtp_pass=QQ邮箱授权码`、`smtp_from=站点名`。QQ 邮箱路径：设置 → 账户 [...]
+2. **易支付**：`epay_api_url=你的易支付接口地址`、`epay_pid=商户ID`、`epay_key=商户密钥`；勾选需要开放的支付方式（支付宝/微信/USDT/Stripe）。type 调用��[...]
 3. **套餐**：在「套餐管理」新建月/季/年/永久套餐（USD 定价）。
 4. **配额与注册开关**：可按需调整免费/会员配额、关闭开放注册。
 
 ## 会员与支付说明
 
 - 新注册用户 `member_plan=trial`，试用 30 天；到期后自动按 `free` 处理（免费 1 账号 / 5 规则，设置可调）。
-- 下单流程：`GET /api/billing/plans`（公开，返回启用套餐 + 启用支付方式）→ `POST /api/billing/checkout`（套餐 USD 原价直接作为易支付收款金额）→ 前端跳易支付收银台（微信/支付宝等通道自带汇率换算）→ 异步通知 `POST /api/billing/notify`（验签 + 金额 ±0.02 校验 + 幂等）→ 订单置 paid、按当前到期日顺延套餐时长（永久直接 lifetime）、SMTP 发支付成功邮件。
+- 下单流程：`GET /api/billing/plans`（公开，返回启用套餐 + 启用支付方式）→ `POST /api/billing/checkout`（套餐 USD 原价直接作为易支付收款金额）→ 前端��[...]
 - 订单 2 小时未支付自动过期；订单详情接口会先向易支付主动查单，防止通知丢失。
 - 未支付订单/到期会员调用创建接口时返回 402「请升级会员」。
 
